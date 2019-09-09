@@ -43,6 +43,7 @@
   const tagCount = functions.tagCount;
   const binarySearch = functions.binarySearch;
   const mergeSort = functions.mergeSort;
+  const numToText = functions.numToText;
 
   describe('Exercises in Recursion in Recursion in Recursion in...', function() {
 
@@ -731,6 +732,29 @@
       });
 
     });
+  });
+  
+  describe('35. Convert numbers to text', function() {
+
+      it('should return a string', function() {
+        expect(typeof(numToText("I have 5 dogs and 6 ponies"))).to.equal('string');
+      });
+
+      it('should convert single digits to their word equivalent', function() {
+        expect(numToText("I have 5 dogs and 6 ponies")).to.eql("I have five dogs and six ponies");
+        expect(numToText("It takes 3 men to screw in 1 light bulb")).to.eql("It takes three men to screw in one light bulb");
+      });
+
+      it('should use recursion by calling self', function () {
+        var originalNumToText = numToText;
+        numToText = sinon.spy(numToText);
+        numToText("I have 5 dogs and 6 ponies");
+        expect(numToText.callCount).to.be.above(1);
+        numToText = originalNumToText;
+      });
+
+    });
+
   });
 
   function checkForNativeMethods(runFunction) {
