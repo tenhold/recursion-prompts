@@ -39,10 +39,10 @@
   const augmentElements = functions.augmentElements;
   const minimizeZeroes = functions.minimizeZeroes;
   const alternateSign = functions.alternateSign;
-  const numToText = functions.numToText;
   const tagCount = functions.tagCount;
   const binarySearch = functions.binarySearch;
   const mergeSort = functions.mergeSort;
+  let numToText = functions.numToText;
 
   describe('Exercises in Recursion in Recursion in Recursion in...', function() {
 
