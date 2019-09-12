@@ -745,11 +745,9 @@
       });
 
       it('should use recursion by calling self', function () {
-        var originalNumToText = numToText;
-        numToText = sinon.spy(numToText);
+        numToText.proxyCallCount = 0
         numToText("I have 5 dogs and 6 ponies");
-        expect(numToText.callCount).to.be.above(1);
-        numToText = originalNumToText;
+        expect(numToText.proxyCallCount).to.be.above(1);
       });
 
     });
