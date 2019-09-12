@@ -754,8 +754,6 @@
 
     });
 
-  });
-
   function checkForNativeMethods(runFunction) {
     it('should not use the native version of map', function() {
       // These spies are set up in testSupport.js
