@@ -43,7 +43,6 @@
   const tagCount = functions.tagCount;
   const binarySearch = functions.binarySearch;
   const mergeSort = functions.mergeSort;
-  const numToText = functions.numToText;
 
   describe('Exercises in Recursion in Recursion in Recursion in...', function() {
 
