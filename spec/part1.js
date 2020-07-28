@@ -476,7 +476,7 @@
 
 
 
-    xdescribe('13. Divide', function() {
+    describe('13. Divide', function() {
 
       it('should return a number', function() {
         expect(typeof(divide(5,2))).to.equal('number');
