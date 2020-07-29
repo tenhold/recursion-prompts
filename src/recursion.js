@@ -77,23 +77,14 @@ console.log(sumBelow(-6))
 // Example:  range(2, 9);  // [3, 4, 5, 6, 7, 8]
 var range = function(x, y) {
   // return an array literal when the y is one away from x
-  if (y - x === 2) {
-    return [x + 1];
-  } else if (y + x === -2) {
-    return [x - 1];
-  } else if (x === y - 1 || x === y + 1) {
+  if (x === (y + 1) || x === (y - 1) || x === y) {
     return [];
   }
 
   if (x < y) {
-    let nums = range(x, y - 1)
-    nums.push(y - 1);
-    return nums;
-  } else if (x > y) {
-    let nums = range(x, y + 1);
-    nums.push(y + 1);
-    return nums;
+    return (range(x, y - 1).concat([y - 1]));
   }
+  return range(x, y + 1).concat([y + 1]);
 };
 
 // 7. Compute the exponent of a number.
@@ -118,7 +109,12 @@ var exponent = function(base, exp) {
 // powerOfTwo(16); // true
 // powerOfTwo(10); // false
 var powerOfTwo = function(n) {
-  
+  if (n === 1) {
+    return true;
+  } else if (n < 1 && n >= 0) {
+    return false;
+  }
+  return powerOfTwo(n / 2);
 };
 
 // 9. Write a function that accepts a string a reverses it.
@@ -334,19 +330,19 @@ var nestedEvenSum = function(obj) {
 // 29. Flatten an array containing nested arrays.
 // Example: flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
 var flatten = function(arrays, array = []) {
-  // if (!arrays.length) {
-  //   return array;
-  // }
-  // // check to see if the current index is an array
-  // if (Array.isArray(arrays[0])) {
-  //   // if it is then return the function and move foward
-  //   return flatten(arrays, array); 
-  // } else {
-  //   // push the current element into the new array.
-  //   array.push(arrays[0])
-  // }
-  // // return the array slicing off the element
-  // return flatten(arrays.slice(1), array);
+  if (!arrays.length) {
+    return array;
+  }
+  // check to see if the current index is an array
+  if (Array.isArray(arrays[0])) {
+    // if it is then return the function and move foward
+    flatten(arrays[0], array); 
+  } else {
+    // push the current element into the new array.
+    array.push(arrays[0])
+  }
+  // return the array slicing off the element
+  return flatten(arrays.slice(1), array);
 };
 
 // 30. Given a string, return an object containing tallies of each letter.
@@ -409,17 +405,22 @@ var minimizeZeroes = function(array) {
 // their original sign.  The first number in the index always needs to be positive.
 // alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4] 
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
-var alternateSign = function(array, flip = true) {
+var alternateSign = function(array) {
   // base case if the array length is zero
-  if (!array.length) {
-    return [];
-  }
-  // recusive case if the element  -1 is undefinded then set that element to pos
-  if (array[-1] === undefined && array[0] < 0) {
-    [-array[0]].concat(alternateSign(array.slice(1)));
-  } 
-  // the sign is less then zero and the last sign was 
-  // else if (array[0] < 0)
+ if (!array.length) {
+   return [];
+ }
+
+ if (array[0] < 0) {
+   array[0] = -array[0];
+ }
+
+ if (array[1] > 0) {
+   array[1] = -array[1];
+ }
+
+ return [array[0], array[1]].concat(alternateSign(array.slice(2)));
+
 };
 
 // 35. Given a string, return a string with digits converted to their word equivalent.
