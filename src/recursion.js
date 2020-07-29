@@ -333,12 +333,37 @@ var nestedEvenSum = function(obj) {
 
 // 29. Flatten an array containing nested arrays.
 // Example: flatten([1,[2],[3,[[4]]],5]); // [1,2,3,4,5]
-var flatten = function(arrays) {
+var flatten = function(arrays, array = []) {
+  // if (!arrays.length) {
+  //   return array;
+  // }
+  // // check to see if the current index is an array
+  // if (Array.isArray(arrays[0])) {
+  //   // if it is then return the function and move foward
+  //   return flatten(arrays, array); 
+  // } else {
+  //   // push the current element into the new array.
+  //   array.push(arrays[0])
+  // }
+  // // return the array slicing off the element
+  // return flatten(arrays.slice(1), array);
 };
 
 // 30. Given a string, return an object containing tallies of each letter.
 // letterTally('potato'); // {'p':1, 'o':2, 't':2, 'a':1}
-var letterTally = function(str, obj) {
+var letterTally = function(str, obj = {}) {
+  // if a number doesn't exist then add it to the object and set it to one
+  // if a number does exist find it and add one to the count
+  if (!str.length) {
+    return obj;
+  }
+  const keys = Object.keys(obj);
+  if (keys.includes(str[0])) {
+    obj[str[0]]++;
+  } else {
+    obj[str[0]] = 1;
+  }
+  return letterTally(str.slice(1), obj);
 };
 
 // 31. Eliminate consecutive duplicates in a list.  If the list contains repeated
@@ -347,6 +372,14 @@ var letterTally = function(str, obj) {
 // Example: compress([1, 2, 2, 3, 4, 4, 5, 5, 5]) // [1, 2, 3, 4, 5]
 // Example: compress([1, 2, 2, 3, 4, 4, 2, 5, 5, 5, 4, 4]) // [1, 2, 3, 4, 2, 5, 4]
 var compress = function(list) {
+  // if the current element is the same as the next element in the list remove it
+  if (!list.length) {
+    return [];
+  }
+  if (list[0] !== list[1]) {
+    return [list[0]].concat(compress(list.slice(1)));
+  }
+  return compress(list.slice(1));
 };
 
 // 32. Augment every element in a list with a new value where each element is an array
@@ -359,19 +392,52 @@ var augmentElements = function(array, aug) {
 // minimizeZeroes([2,0,0,0,1,4]) // [2,0,1,4]
 // minimizeZeroes([2,0,0,0,1,0,0,4]) // [2,0,1,0,4]
 var minimizeZeroes = function(array) {
+  // if the element is a 0 compare it to the next element
+  // if the next element is not a 0 then add to array in not then do nothing
+  if (!array.length) {
+    return [];
+  }
+  if (array[0] === 0 && array[0] !== array[1]) {
+    return [array[0]].concat(minimizeZeroes(array.slice(1)));
+  } else if (array[0] === 0 && array[0] === array[1]) {
+    return minimizeZeroes(array.slice(1));
+  }
+  return [array[0]].concat(minimizeZeroes(array.slice(1)));
 };
 
 // 34. Alternate the numbers in an array between positive and negative regardless of
 // their original sign.  The first number in the index always needs to be positive.
-// alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4]
+// alternateSign([2,7,8,3,1,4]) // [2,-7,8,-3,1,-4] 
 // alternateSign([-2,-7,8,3,-1,4]) // [2,-7,8,-3,1,-4]
-var alternateSign = function(array) {
+var alternateSign = function(array, flip = true) {
+  // base case if the array length is zero
+  if (!array.length) {
+    return [];
+  }
+  // recusive case if the element  -1 is undefinded then set that element to pos
+  if (array[-1] === undefined && array[0] < 0) {
+    [-array[0]].concat(alternateSign(array.slice(1)));
+  } 
+  // the sign is less then zero and the last sign was 
+  // else if (array[0] < 0)
 };
 
 // 35. Given a string, return a string with digits converted to their word equivalent.
 // Assume all numbers are single digits (less than 10).
 // numToText("I have 5 dogs and 6 ponies"); // "I have five dogs and six ponies"
 var numToText = function(str) {
+  // char codes 48 - 57;
+  if (!str.length) {
+    return str;
+  }
+  const nums = 'zero,one,two,three,four,five,six,seven,eight,nine'.split(',');
+  // if the character codes is between 48 and 57 subtract 48 from the number and
+  // set it as the nums index
+  if (str[0].charCodeAt() >= 48 && str[0].charCodeAt() <= 57) {
+    let idx = str[0].charCodeAt() - 48;
+    return nums[idx] += numToText(str.slice(1));
+  }
+  return str[0] += numToText(str.slice(1));
 };
 
 // *** EXTRA CREDIT ***
