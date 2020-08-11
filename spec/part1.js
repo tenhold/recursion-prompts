@@ -84,7 +84,7 @@
 
 
 
-    xdescribe('3. Sum Integers in Array', function() {
+    describe('3. Sum Integers in Array', function() {
 
       it('should return a number', function() {
         expect(typeof(arraySum([[1],[2,3],[[4]],5,6]))).to.eql('number');
@@ -726,7 +726,7 @@
 
 
 
-    xdescribe('21. Count key in object', function() {
+    describe('21. Count key in object', function() {
       var input = {'e': {'x':'y'}, 't':{'r': {'e':'r'}, 'p': {'y':'r'}},'y':'e'};
 
       it('should return a number', function() {
@@ -756,7 +756,7 @@
 
 
 
-    xdescribe('22. Count value in object', function() {
+    describe('22. Count value in object', function() {
       var input = {'e': {'x':'y'}, 't':{'r': {'e':'r'}, 'p': {'y':'r'}},'y':'e'};
 
       it('should return a number', function() {
@@ -786,7 +786,7 @@
 
 
 
-    xdescribe('23. Replace keys in object', function() {
+    describe('23. Replace keys in object', function() {
 
       var tallyKeys = function(obj) {
         var count = 0;
@@ -850,7 +850,7 @@
     });
 
 
-    xdescribe('24. First n Fibonacci', function() {
+    describe('24. First n Fibonacci', function() {
 
       it('should return an array', function() {
         expect(Array.isArray(fibonacci(5))).to.equal(true);
@@ -1073,7 +1073,7 @@
 
 
 
-    xdescribe('32. Augment each element in nested arrays', function() {
+    describe('32. Augment each element in nested arrays', function() {
 
       it('should return an array', function() {
         expect(Array.isArray(augmentElements([[],[3],[7]], 5))).to.equal(true);

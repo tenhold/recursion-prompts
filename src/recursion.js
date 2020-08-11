@@ -29,14 +29,17 @@ var sum = function(array) {
 
 // 3. Sum all numbers in an array containing nested arrays.
 // Example: arraySum([1,[2,3],[[4]],5]); // 15
-var arraySum = function(array) {
-  // if (!array.length) {
-  //   return 0;
-  // }
-  // if (Array.isArray(array[0])) {
-  //   return array[0] + arraySum(array[0].slice(1))
-  // }
-  // return array[0] + arraySum(array.slice(1))
+var arraySum = function(array, sum = 0) {
+  // if the array length is 0 return number
+  if (!array.length) {
+    return sum;
+  }
+  // if the element is an array go in to the array
+  if (Array.isArray(array[0])) {
+    arraySum(array[0], sum);
+  }
+  // if the element is a number then add that number to the sum and return
+  return arraySum(array.slice(1), sum += array[0]);
 };
 
 // console.log(arraySum([1,[2,3],[[4]],5]));
@@ -77,14 +80,14 @@ console.log(sumBelow(-6))
 // Example:  range(2, 9);  // [3, 4, 5, 6, 7, 8]
 var range = function(x, y) {
   // return an array literal when the y is one away from x
-  if (x === (y + 1) || x === (y - 1) || x === y) {
-    return [];
-  }
-
-  if (x < y) {
-    return (range(x, y - 1).concat([y - 1]));
-  }
-  return range(x, y + 1).concat([y + 1]);
+ if (x === y + 1 || x === y - 1 || x === y) {
+   return [];
+ }
+ // add y into the array and remove one from y if x is less than y 
+ if (x < y) {
+   return range(x, y - 1).concat([y - 1]);
+ }
+ return range(x, y + 1).concat([y + 1]);
 };
 
 // 7. Compute the exponent of a number.
@@ -130,12 +133,19 @@ var reverse = function(string, revStr = '') {
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
-  let newStr = string.toLowerCase().split(' ').join('');
-  if (newStr[0] !== newStr[newStr.length - 1]) {
-    return false;
-  } else if (!newStr.length) {
+  // if the string length is zero return true
+  // ignore char cases and spaces
+  string = string.toLowerCase().split(' ').join('');
+  console.log(string)
+  if (!string.length) {
     return true;
   }
+  // if the first element doesn't match the last elmemnt in the string return
+  // false
+  else if (string[0] !== string[string.length - 1]) {
+    return false;
+  }
+  // return the function cutting off the first and last character in the string
   return palindrome(string.slice(1, -1));
 };
 
@@ -253,7 +263,18 @@ var rMap = function(array, callback) {
 // var testobj = {'e': {'x':'y'}, 't':{'r': {'e':'r'}, 'p': {'y':'r'}},'y':'e'};
 // countKeysInObj(testobj, 'r') // 1
 // countKeysInObj(testobj, 'e') // 2
-var countKeysInObj = function(obj, key) {
+
+var countKeysInObj = function(obj, target) {
+  let counter = 0;
+  for (let key in obj) {
+    if (typeof obj === 'object') {
+     counter += countKeysInObj(obj[key], target);
+    }
+    if (key === target) {
+      counter ++;
+    }
+  }
+  return counter;
 };
 
 // 22. Write a function that counts the number of times a value occurs in an object.
@@ -261,12 +282,45 @@ var countKeysInObj = function(obj, key) {
 // countValuesInObj(testobj, 'r') // 2
 // countValuesInObj(testobj, 'e') // 1
 var countValuesInObj = function(obj, value) {
+  // set a counter 
+  // loop over the obj
+  // if the value is an object run the function on the value
+  // if the value is the same as the param value add one to the counter
+  // return counter
+  let counter = 0;
+  for (let key in obj) {
+    if (typeof obj[key] === 'object') {
+      counter += countValuesInObj(obj[key], value);
+    }
+    if (obj[key] === value) {
+      counter++;
+    }
+  }
+  return counter;
 };
 
 // 23. Find all keys in an object (and nested objects) by a provided name and rename
 // them to a provided new name while preserving the value stored at that key.
 var replaceKeysInObj = function(obj, key, newKey) {
+  // loop over the object
+  // if the current key is equal to the param key repalce the key with newKey
+  // delete the old key
+  // if the value is a object then call the fucnction with the current value
+  for (let prop in obj) {
+    if (prop === key) {
+      obj[newKey] = obj[prop];
+      delete obj[prop];
+    }
+    if (typeof obj[prop] === 'object') {
+      replaceKeysInObj(obj[prop], key, newKey);
+    }
+  }
+  return obj;
 };
+
+
+
+
 
 // 24. Get the first n Fibonacci numbers.  In the Fibonacci Sequence, each subsequent
 // number is the sum of the previous two.
@@ -274,6 +328,12 @@ var replaceKeysInObj = function(obj, key, newKey) {
 // fibonacci(5);  // [0, 1, 1, 2, 3, 5]
 // Note:  The 0 is not counted.
 var fibonacci = function(n) {
+  if (n < 2 && n > 0) {
+    return [];
+  } else if (n < 0) {
+    return null
+  }
+  return [n].concat(nthFibo(n - 1) + nthFibo(n - 2));
 };
 
 // 25. Return the Fibonacci number located at index n of the Fibonacci sequence.
@@ -281,8 +341,9 @@ var fibonacci = function(n) {
 // nthFibo(5); // 5
 // nthFibo(7); // 13
 // nthFibo(3); // 2
-var nthFibo = function(n, target = 0) {
-  if (n < 2 && n > 0) {
+var nthFibo = function(n) {
+  // if n is between 0 and 2
+  if (n >= 0 && n < 2) {
     return n;
   } else if (n < 0) {
     return null;
@@ -350,7 +411,7 @@ var flatten = function(arrays, array = []) {
 var letterTally = function(str, obj = {}) {
   // if a number doesn't exist then add it to the object and set it to one
   // if a number does exist find it and add one to the count
-  if (!str.length) {
+  if (str.length === 0) {
     return obj;
   }
   const keys = Object.keys(obj);
@@ -382,6 +443,15 @@ var compress = function(list) {
 // itself.
 // Example: augmentElements([[],[3],[7]], 5); // [[5],[3,5],[7,5]]
 var augmentElements = function(array, aug) {
+  // if the element is an array return the function on that elment
+  // if not push the aug element into that array.
+  
+  if (!array.length){
+    return array;
+  }
+
+    array[0].push(aug);
+    return [array[0]].concat(augmentElements(array.slice(1), aug));
 };
 
 // 33. Reduce a series of zeroes to a single 0.
@@ -445,7 +515,9 @@ var numToText = function(str) {
 
 // 36. Return the number of times a tag occurs in the DOM.
 var tagCount = function(tag, node) {
+  console.log(arguments)
 };
+
 
 // 37. Write a function for binary search.
 // Sample array:  [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
